@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>オンドゥル語変換キングフォーム</title>
+    <script src="./jquery.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      function update(query){
+        $.get("./ondl.cgi?"+encodeURI(query),function(data){
+          $("#result").text(data);
+          updateParam(query);
+        });
+      }
+      
+      function tweetURI(message){
+        return "http://twitter.com/home?status="+
+           encodeURIComponent(message+ " [オンドゥル語変換]");
+      }
+
+      function updateParam(param){
+        var newURL="";
+        if(document.URL.match(/#/)){
+          newURL=document.URL.replace(/#.*$/,"#"+param);
+        }else{
+          newURL=document.URL+"#"+param;
+        }	
+        location.href=newURL;
+      }
+
+      function param(url){
+        var matched=url.match(/#(.*)$/);
+        return decodeURI(RegExp.$1);
+      }
+      
+ 
+      function tweet(){
+        var query=$("#input_text").val();
+        var result=$("#result").text();
+        $.get("./ondl.cgi/message?"+encodeURI(query),function(data){
+          location.href=decodeURI(tweetURI(data));
+        });
+      }
+
+      $(document).ready(function(){
+          $("#tweet").click(tweet);
+
+          var input_text=$("#input_text");
+          var p=param(document.URL);
+          
+          if(p){
+            update(p);
+            input_text.val(p);
+          }
+          input_text.change(function(){
+            var query=$(this).val();
+
+            update(query);
+          });
+        });
+    </script>
+  </head>
+  <body>
+    <h1>オンドゥル語変換 キングフォーム</h1>
+    <div>
+      <div>結果: <p id="result"></p></div>
+      <input type="text" name="text" id="input_text" size="40" />
+      <input type="button" id="tweet" value="tweetする" />
+    </div>
+    <p>
+      使い方: 変換したい言葉を入力してEnter
+    </p>
+
+    <div>
+	<!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
+	<a href="http://developer.yahoo.co.jp/about">
+	<img src="http://i.yimg.jp/images/yjdn/yjdn_attbtn1_125_17.gif" title="Webサービス by Yahoo! JAPAN" alt="Web Services by Yahoo! JAPAN" width="125" height="17" border="0" style="margin:15px 15px 15px 15px"></a>
+	<!-- End Yahoo! JAPAN Web Services Attribution Snippet -->
+    </div>
+  </body>
+</html>
