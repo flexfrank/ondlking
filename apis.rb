@@ -70,7 +70,7 @@ end
 
 
 if $0==__FILE__
-  yapi=YahooAPI.new("agyjofaxg652ECTBFueopGKzabwis0iACOhcrl8Am59fpTERMfMzkX2zi90qmdo3hHtBOwJb")
+  yapi=YahooAPI.new("")
 
   p yapi.reading("月は無慈悲な夜の女王")
   p yapi.reading("アンドロイドは電気羊の夢を見るか?")
